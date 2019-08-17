@@ -11,10 +11,6 @@
     require("./Book")
     const Book = mongoose.model("Book")
 
-    //Connect
-    mongoose.connect("mongodb://eduonix:123456789abc@ds159100.mlab.com:59100/booksservice", () => {
-        console.log("Database is connected!");
-    });
 
 app.get('/', (req, res) => {
     res.send("This is the books service");
@@ -48,20 +44,12 @@ app.get('/', (req, res) => {
         // Create a new Book
         var book = new Book(newBook)
 
-        book.save().then(() => {
-            console.log("New book created! Book name: " + req.body.title)
-        }).catch((err) => {
-            if(err){
-                throw err;
-            }
-        })
-        res.send("A new book created with success!")
 
         //Create on MySQL
         var sql = "INSERT INTO `livro`(`title`, `author`, `numberPages`, `publisher`) VALUES ('" + req.body.title + "','" + req.body.author + "'," + req.body.numberPages + ",'" + req.body.publisher + "')";
         con.query(sql, function (err, result) {
          if (err) throw err;
-         console.log("1 record inserted");
+         console.log("New book created! Book name: " + req.body.title);
         });
     })
 
